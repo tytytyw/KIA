@@ -779,6 +779,7 @@
 
         .select .option {
             transition: color .1s ease, background .1s ease;
+            padding: 0 .2rem;
         }
 
         .select .options .option:hover {
@@ -862,12 +863,22 @@
             text-align: center;
             width: calc(100% + 1rem);
             transform: translateX(calc(100% + 0.5rem + 4px));
+            font-weight: 600;
+            min-width: max-content;
+        }
+
+        .grid__row .select:hover {
+            color: var(--theme-color);
+        }
+
+        .grid__row .select:hover .arrow-icon path {
+            stroke: var(--theme-color);
         }
 
         .grid__row .select .options::after {
             content: "";
             position: absolute;
-            left: 1px;
+            left: 0;
             top: 4px;
             border: 10px solid transparent;
             border-right: 10px solid var(--theme-color);
@@ -884,7 +895,6 @@
 
         .grid__row .select.active {
             color: var(--theme-color);
-            font-weight: 600;
         }
 
         .grid__row .select.active .arrow-icon {

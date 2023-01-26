@@ -211,9 +211,10 @@
             -ms-transition: opactity .3s ease;
             -o-transition: opactity .3s ease;
             white-space: nowrap;
+            z-index: 2;
         }
 
-        .lang:hover {
+        .lang:not(.active):hover {
             color: rgba(36, 54, 78, .7);
         }
 

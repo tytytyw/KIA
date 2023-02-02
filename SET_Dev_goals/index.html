@@ -658,9 +658,15 @@
             border-top: 0;
         }
 
-        .grid {
+        .grid.colums_2 {
             display: grid;
-            grid-template-columns: 5fr 3fr 1fr 1.5fr 1fr 1.5fr;
+            grid-template-columns: 4fr 6fr;
+            /* padding-left: 2rem; */
+        }
+
+        .grid.colums_3 {
+            display: grid;
+            grid-template-columns: 1fr 3fr 6fr;
             /* padding-left: 2rem; */
         }
 
@@ -678,6 +684,10 @@
         .grid__col .grid__row {
             padding-left: .5rem;
             padding-right: .5rem;
+            min-height: 2rem;
+            box-sizing: content-box;
+            display: flex;
+            align-items: center;
         }
 
         .table__row_head.grid .grid__col:first-child,
@@ -916,6 +926,91 @@
         .tables .table:last-child {
             padding-bottom: 100px;
         }
+
+        .text-info {
+            padding: 0 11px 6px;
+        }
+
+        .checkbox {
+            width: 10px;
+            height: 10px;
+            border: 1px solid rgba(149, 155, 174, 0.5);
+            border-radius: 2px;
+            margin-right: 1rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .checkbox.checked {
+            background: var(--theme-color);
+            border-color: var(--theme-color);
+        }
+
+        .checkbox.checked .cheked-icon {
+            display: block;
+        }
+
+        .cheked-icon {
+            display: none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+        }
+
+        .table .table__wrapper .table__row.actions {
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .table__row.actions .action {
+            margin-left: .6rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: var(--theme-color);
+        }
+
+        .table__row.actions .action .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: .5rem;
+        }
+
+        .table__row.actions .action .icon svg path {
+            fill: var(--theme-color);
+        }
+
+        .actions .info__icon {
+            cursor: pointer;
+        }
+
+        .actions .info:hover .info__icon path {
+            fill: var(--theme-color);
+        }
+
+        .table .table.table_info {
+            padding: 0;
+        }
+
+        .table .table.table_info .text-info  {
+            padding: 6px 11px;
+        }
+
+        .table__wrapper.sub-info-hidden .table_info {
+            display: none;
+        }
+
+        .text-area {
+            padding: 8px;
+            margin: 8px;
+            background: #FFFFFF;
+            border: 1px solid rgba(149, 155, 174, 0.25);
+            box-shadow: 0px 4px 8px rgb(0 0 0 / 10%);
+            border-radius: 4px;
+            max-height: max-content;
+        }
     </style>
 </head>
 
@@ -926,8 +1021,8 @@
             <a href="profile-link" id="profile-link" class="nav__link">Профайл сотрудника</a>
             <a href="SET_EVAL-link" id="SET_EVAL-link" class="nav__link">Business Goals SET_EVAL</a>
             <a href="Сompany_goal-link" id="Сompany_goal-link" class="nav__link">Сompany goal</a>
-            <a href="EVAL_Comp-link" id="EVAL_Comp-link" class="nav__link active">EVAL_Comp</a>
-            <a href="SET_Dev_goals-link" id="SET_Dev_goals-link" class="nav__link">SET Dev goals</a>
+            <a href="EVAL_Comp-link" id="EVAL_Comp-link" class="nav__link">EVAL_Comp</a>
+            <a href="SET_Dev_goals-link" id="SET_Dev_goals-link" class="nav__link active">SET Dev goals</a>
         </nav>
 
         <div class="header__actions">
@@ -977,49 +1072,10 @@
 
     <div class="scroll-container">
 
-        <!-- выбор модели компетенций-->
-        <div class="model__choose flex">
-            <p class="title">
-                Выберите модель компетенций:
-            </p>
-            <div class="select" id="select-model">
-                <!-- выбранная модель-->
-                <div class="select__value">выбранная модель</div>
-                <div class="drop-icon">
-                    <div class="triangle flex">
-                        <svg width="5" height="4" viewBox="0 0 5 4" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4.9285 0.833252H0.375L2.65175 3.35703L4.9285 0.833252Z" fill="#BCBFCB" />
-                        </svg>
-                    </div>
-                </div>
-
-                <!-- список моделей-->
-                <div class="options">
-                    <div class="option">
-                        <a href="option_1" id="option_1">модель 1</a>
-                    </div>
-                    <div class="option">
-                        <a href="option_2" id="option_2">модель 2</a>
-                    </div>
-                    <div class="option">
-                        <a href="option_3" id="option_3">модель 3</a>
-                    </div>
-                    <div class="option">
-                        <a href="option_4" id="option_4">модель 4</a>
-                    </div>
-                    <div class="option">
-                        <a href="option_5" id="option_5">модель 5</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- table info -->
         <div id="info-tables">
             <div id="table-info"></div>
         </div>
-        <p class="undertable-tip">Competency is considered fully developed if all behavioral indicators related to it
-            are CONSTANTLY demonstrated</p>
 
         <div class="tables">
         </div>
@@ -1032,194 +1088,199 @@
     // green или red или orange
     let themeColor = "green";
 
-
-    // пункты выпадающего меню в таблице
-    const options = ['Никогда', 'Иногда', 'Часто', 'Постоянно'];
-
     // инфо таблица
     const tableTwoContent = {
-        title: 'Connection between competencies appraisal and job level',
-        rows: [
-            {
-                letter: { color: 'orange', text: 'S' },
-                collumn_2: 'Outstanding',
-                collumn_3: 'Демонстрирует большинство компетенций более высокого уровня должности',
-                collumn_4: 'Demonstrating  most competencies of the higher job level',
-            },
-            {
-                letter: { color: 'yellow', text: 'A' },
-                collumn_2: 'Exceeds expectations ',
-                collumn_3: 'Демонстрирует большую часть компетенций более высокого уровня должности',
-                collumn_4: 'Demonstrating  a majority of competencies of the higher job level',
-            },
-            {
-                letter: { color: 'green', text: 'B' },
-                collumn_2: 'Fully meets expectations',
-                collumn_3: 'Демонстрирует все компетенции своего уровня должности',
-                collumn_4: 'Demonstrating  all competencies of this job level',
-            },
-
-            {
-                letter: { color: 'purple', text: 'C' },
-                collumn_2: 'Needs improvement',
-                collumn_3: 'Демонстрирует некоторые компетенции своего уровня должности',
-                collumn_4: 'Demonstrating  some competencies of this job level',
-            },
-            {
-                letter: { color: 'red', text: 'D' },
-                collumn_2: 'Does not meet',
-                collumn_3: 'Не демонстрирует большинство компетенций своего уровня должности',
-                collumn_4: 'Demonstrating  few competencies of this job level',
-            },
-        ]
+        title: 'Info',
+        text: `
+            Часто, когда говорят о развитии, думают прежде всего о тренингах или курсах. 
+            Однако подход 70-20-10 (обучение в работе- обучение при общении с коллегами - тренинги) является более реалистичным.
+            Используя этот подход, вы можете комбинировать все три вида обучения наиболее эффективным для себя способом.
+            Напоминаем, что в КИА мы предлагаем прохождение 2 внешних тренингов в году, остальное обучение должно проходить при взаимодействии с коллегами и в работе.
+            При определении способов достижения целей для развития будьте изобретательными. 
+            При постановке целей для развития вам необходимо:
+            - сначала провести оценку компетенций (форма 2) - это поможет определить сильные и слабые стороны 
+            - далее поставить цели для развития - описав свои сильные и слабые стороны в связке с компетенциями (вы можете добавлять поля для описания), и определив вместе с руководителем необходимые развивающие действия (для идей и вдохновения используйте, пожалуйста, форму 4 - примеры возможных развивающих действий)
+        `
     }
 
     // контект таблицы
-    const gridTables = [{
-        // первая таблица
-        title: '2. Поиск и анализ фактов: Тщательный сбор фактов из различных внутренних и внешних источников с их четким и последовательным анализом и обобщением. Выработка рекомендаций, направленных на создание ценности для клиента',
-        head: {
-            col_1: 'Outstanding',
-            col_2: 'Examples of concrete situations',
-            col_3: 'Self-evaluation',
-            col_4: 'self-assessment of competencies',
-            col_5: 'Evaluation',
-            col_6: 'Competencies appraisal',
-        },
-        body: {
-            col_1: {
-                row_1: 'I actively learn about the business of my customers',
-                row_2: 'I continuously ask “why” to thoroughly analyze issues and opportunities',
-                row_3: 'I use a broad range of methods and tools to analyze and summarize data',
-                row_4: 'I make timely recommendations for action based on solid facts and research',
-                row_5: 'I provide support to others in the team to identify opportunities and risks',
-                row_6: 'I provide support to others in the team to identify opportunities and risks',
-            },
-            col_2: {
-                row_1: 'test'
-            },
-            col_3: {
-                row_1: 'Постоянно',
-                row_2: 'Иногда',
-                row_3: 'Иногда',
-                row_4: '',
-                row_5: '',
-                row_6: '',
-            },
-            col_4: {
-                row_1: 'A'
-            },
-            col_5: {
-                row_1: 'Часто',
-                row_2: 'Часто',
-                row_3: '',
-                row_4: '',
-                row_5: '',
-                row_6: '',
-            },
-            col_6: {
-                row_1: 'B'
-            },
-        }
-    },
 
-    {
-        // вторая таблица
-        title: '2. Поиск и анализ фактов',
-        head: {
-            col_1: 'Outstanding',
-            col_2: 'Examples of concrete situations',
-            col_3: 'Self-evaluation',
-            col_4: 'self-assessment of competencies',
-            col_5: 'Evaluation',
-            col_6: 'Competencies appraisal',
-        },
-        body: {
-            col_1: {
-                row_1: 'I learn about the business of my customers',
-                row_2: 'I ask “why” to thoroughly analyze issues and opportunities',
-                row_3: 'I use a broad range of methods and tools to analyze and summarize data',
-                row_4: 'I make timely recommendations for action based on solid facts and research',
-                row_5: 'I provide support to others in the team to identify opportunities and risks',
-                row_6: 'I provide support to others in the team to identify opportunities and risks',
-            },
-            col_2: {
-                row_1: 'test2'
-            },
-            col_3: {
-                row_1: '',
-                row_2: '',
-                row_3: '',
-                row_4: '',
-                row_5: '',
-                row_6: '',
-            },
-            col_4: {
-                row_1: 'A'
-            },
-            col_5: {
-                row_1: '',
-                row_2: '',
-                row_3: '',
-                row_4: '',
-                row_5: '',
-                row_6: '',
-            },
-            col_6: {
-                row_1: 'B'
-            },
-        }
-    },
+    // при col_1 и col_2 (кол-во колонок 2) рисуется обычная таблица,
+    // иначе при  col_1, col_2 и col_3 (кол-во колонок 3) рисуется таблица с чекбоками
+    const gridTables = [
+        {
+            // первая таблица (обычная таблица)
 
+            // кнопки интерактивности в шапке таблице.
+            actions: {
+                
+                plus: {
+                    text: '',
+                    id: 'any_id'
+                },
+                // кнопка инфо: "" - нету кнопки или вставить 'текст информации'
+                info: ``
+            },
 
-    {
-        // третья таблица
-        title: '3. Тщательный сбор фактов',
-        head: {
-            col_1: 'Outstanding',
-            col_2: 'Examples of concrete situations',
-            col_3: 'Self-evaluation',
-            col_4: 'self-assessment of competencies',
-            col_5: 'Evaluation',
-            col_6: 'Competencies appraisal',
+            title: '1. Areas of strength',
+            head: {
+                col_1: 'Competencies',
+                col_2: 'Add an examples',
+            },
+            body: {
+                col_1: {
+                    row_1: 'Direction: Systemic & Analytical thinking',
+                    row_2: 'Solutions: Creativity & Innovation',
+                    row_3: 'Consensus: Effective Decision making',
+                    row_4: 'Implementing: managing and organizing',
+                    row_5: 'Reviewing: Organizational learning',
+                    row_6: 'managing people',
+                },
+                col_2: {
+                    row_1: 'Test',
+                    row_2: 'Test',
+                    row_3: 'Test',
+                    row_4: 'Test',
+                    row_5: 'Test',
+                    row_6: 'Test',
+                },
+            }
         },
-        body: {
-            col_1: {
-                row_1: 'I learn about the business of my customers',
-                row_2: 'I ask “why” to thoroughly analyze issues and opportunities',
-                row_3: 'I use a broad range of methods and tools to analyze and summarize data',
-                row_4: 'I make timely recommendations for action based on solid facts and research',
-                row_5: 'I provide support to others in the team to identify opportunities and risks',
-                row_6: 'I provide support to others in the team to identify opportunities and risks',
+        {
+            // вторая таблица (с чекбоксами)
+
+             // кнопки интерактивности в шапке таблице.
+            actions: {
+                // "" - нету кнопки
+                plus: "",
+
+                // кнопка инфо: "" - нету кнопки или вставить 'текст информации'
+                info: ``
             },
-            col_2: {
-                row_1: 'test3'
+            title: '2a. Where do you see your development aim in the short term (1 year)? ',
+            head: {
+                col_1: 'Position aim',
+                col_2: 'Mark below',
+                col_3: 'Please describe your position aim and share your motivation',
             },
-            col_3: {
-                row_1: '',
-                row_2: '',
-                row_3: '',
-                row_4: '',
-                row_5: '',
-                row_6: '',
+            body: {
+                col_1: {
+                    row_1: {
+                        text: 'Lateral move',
+                        cheked: 'false',
+                        id: 'some_id_1'
+                    },
+                    row_2: {
+                        text: 'promotion',
+                        cheked: 'false',
+                        id: 'some_id_2'
+                    }, row_3: {
+                        text: 'Same position',
+                        cheked: 'true',
+                        id: 'some_id_3'
+                    },
+                },
+                col_2: {
+                    row_1: 'Test',
+                    row_2: '',
+                    row_3: '',
+                },
+            }
+        },
+        {
+            // третья таблица (с чекбоксами)
+
+             // кнопки интерактивности в шапке таблице.
+            actions: {
+                
+                plus: {
+                    text: 'Development actions',
+                    id: 'any_id'
+                },
+                // кнопка инфо: "" - нету кнопки или вставить 'текст информации'
+                info: `
+                    Taking our 70-20-10 Kia learning philosophy into account (70 % learning by doing, 20 % learning from others, 10 % learning in formal training), please identify and describe your specific development areas and planned activities in detail. 
+                    Так как иногда бывает сложно придумать увидеть способы развития в своей ежедневной деятельности, мы предлагаем вам несколько примеров для вдохновения. На их основе вы сможете придумать\ предложить подходящие именно вам способы развития (см. Development actions).
+                    You can add some more development areas in case it is required (+)
+                `
             },
-            col_4: {
-                row_1: 'A'
+            title: '2b. Where do you see your development aim in the mid-term (2-3 years)?',
+            head: {
+                col_1: 'Position aim',
+                col_2: 'Mark below',
+                col_3: 'Please describe your position aim and share your motivation',
             },
-            col_5: {
-                row_1: '',
-                row_2: '',
-                row_3: '',
-                row_4: '',
-                row_5: '',
-                row_6: '',
+            body: {
+                col_1: {
+                    row_1: {
+                        text: 'Lateral move',
+                        cheked: 'true',
+                        id: 'some_id_4'
+                    },
+                    row_2: {
+                        text: 'promotion',
+                        cheked: 'false',
+                        id: 'some_id_5'
+                    }, row_3: {
+                        text: 'Same position',
+                        cheked: 'false',
+                        id: 'some_id_6'
+                    },
+                },
+                col_2: {
+                    row_1: 'Test',
+                    row_2: '',
+                    row_3: '',
+                },
+            }
+        },
+
+        {
+            // 4я таблица (обычная таблица)
+
+            // кнопки интерактивности в шапке таблице.
+            actions: {
+                
+                plus: {
+                    text: 'Development actions',
+                    id: 'any_id'
+                },
+                // кнопка инфо: "" - нету кнопки или вставить 'текст информации'
+                info: `
+                    Taking our 70-20-10 Kia learning philosophy into account (70 % learning by doing, 20 % learning from others, 10 % learning in formal training), please identify and describe your specific development areas and planned activities in detail. 
+                    Так как иногда бывает сложно придумать увидеть способы развития в своей ежедневной деятельности, мы предлагаем вам несколько примеров для вдохновения. На их основе вы сможете придумать\ предложить подходящие именно вам способы развития (см. Development actions).
+                    You can add some more development areas in case it is required (+)
+                `
             },
-            col_6: {
-                row_1: 'B'
+
+            title: '3. Key development areas over the next 12 months.',
+            head: {
+                col_1: 'Describe your development area. Which competencies does your development area relate to?',
+                col_2: 'Describe your first planned development activity in detail and the status of it. What kind of support do you need and from whom?',
             },
+            body: {
+                col_1: {
+                    row_1: 'Direction: Systemic & Analytical thinking',
+                    row_2: 'Solutions: Creativity & Innovation',
+                    row_3: 'Consensus: Effective Decision making',
+                    row_4: 'Implementing: managing and organizing',
+
+                },
+                col_2: {
+                    row_1: 'Test',
+                    row_2: 'Test',
+                    row_3: '',
+                    row_4: '',
+                },
+            }
         }
-    },
+
     ];
+
+    // окно для коментария
+    // "" нет откна
+    // "какой-то текст" - заголовок 
+    const commentTable = `4. Comments. (Любые комментарии и вопросы касательно ваших целей развития вы можете записать здесь)`
 
 
 
@@ -1236,13 +1297,77 @@
         const tableWrapper = document.createElement('div');
         tableWrapper.className = 'table__wrapper';
         if (index > 0) tableWrapper.classList.add('collapsed')
-        table.appendChild(tableWrapper);
 
-        tableWrapper.innerHTML = `
-            <div class="collapse-button ${index > 0 ? 'collapsed' : ''}">
-                <div class="collapse-button__line"></div>
-                <div class="collapse-button__line collapse-button__line_vertical"></div>
+        const collumsLength = Object.keys(content.head).length;
+
+        const addPlusBtn = (content) => (`
+            <div class="action" id="${content.id}">
+                <div class="icon">
+                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11 5.5C11 8.53757 8.53757 11 5.5 11C2.46243 11 0 8.53757 0 5.5C0 2.46243 2.46243 0 5.5 0C8.53757 0 11 2.46243 11 5.5ZM10.061 5.5C10.061 8.01896 8.01896 10.061 5.5 10.061C2.98104 10.061 0.939024 8.01896 0.939024 5.5C0.939024 2.98104 2.98104 0.939024 5.5 0.939024C8.01896 0.939024 10.061 2.98104 10.061 5.5ZM5.05285 3.21951C5.05285 2.97256 5.25304 2.77236 5.5 2.77236C5.74696 2.77236 5.94715 2.97256 5.94715 3.21951V5.05285H7.78049C8.02744 5.05285 8.22764 5.25304 8.22764 5.5C8.22764 5.74696 8.02744 5.94715 7.78049 5.94715H5.94715V7.78049C5.94715 8.02744 5.74696 8.22764 5.5 8.22764C5.25304 8.22764 5.05285 8.02744 5.05285 7.78049V5.94715H3.21951C2.97256 5.94715 2.77236 5.74696 2.77236 5.5C2.77236 5.25304 2.97256 5.05285 3.21951 5.05285H5.05285V3.21951Z" fill="#5D7D2B"/>
+                    </svg>
+                </div>
+                <div>${content.text}</div>
             </div>
+        `);
+
+        const addInfoBtn = () => (`
+            <div class="action info">
+                <svg class="info__icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 0C2.69147 0 0 2.69147 0 6C0 9.30853 2.69147 12 6 12C9.30853 12 12 9.30853 12 6C12 2.69147 9.30853 0 6 0ZM6 2.50003C6.27603 2.50003 6.49997 2.72397 6.49997 3C6.49997 3.27603 6.27603 3.49997 6 3.49997C5.72397 3.49997 5.50003 3.27603 5.50003 3C5.50003 2.72397 5.72397 2.50003 6 2.50003ZM7.125 9.49997H4.875C4.59851 9.49997 4.37503 9.27603 4.37503 9C4.37503 8.72397 4.59851 8.50003 4.875 8.50003H5.50003V5.50003H5.12503C4.84854 5.50003 4.62497 5.276 4.62497 4.99997C4.62497 4.72403 4.84854 4.5 5.12503 4.5H6C6.27649 4.5 6.49997 4.72403 6.49997 4.99997V8.50003H7.125C7.40149 8.50003 7.62497 8.72397 7.62497 9C7.62497 9.27603 7.40149 9.49997 7.125 9.49997Z" fill="#6D6E71"></path>
+                </svg>
+            </div>
+        `)
+
+        const twoColTemplate = `
+            <div div class="collapse-button ${index > 0 ? 'collapsed' : ''}" >
+                    <div class="collapse-button__line"></div>
+                    <div class="collapse-button__line collapse-button__line_vertical"></div>
+            </div >
+
+            <div class="table__head">
+                <div class="table__row ${content.actions.plus || content.actions.info ? "actions" : ""}">
+                    <p class="group__title">${content.title}</p>
+                    ${content.actions.plus ? addPlusBtn(content.actions.plus) : ""}
+                    ${content.actions.info ? addInfoBtn(content.actions.info) : ""}
+                </div>
+            </div>
+
+            <div class="collapsing-wrapper">
+
+                
+                ${content.actions && content.actions.info ? `<div class="table table_info" >
+                    <div class="table__wrapper sub-info-hidden">
+                        <div class="table__body">
+                            <div class="table__row text-info">
+                                ${content.actions.info}
+                            </div>
+                        </div>
+                    </div>
+                </div >` : ''}
+
+                <div class="table__row_head grid colums_${collumsLength}">
+                    <div class="grid__col flex">${content.head.col_1}</div>
+                    <div class="grid__col flex">${content.head.col_2}</div>
+                </div>
+
+                <div class="table__body grid colums_${collumsLength}">
+                    <div class="grid__col">
+                        ${Object.values(content.body.col_1).map(row => `<div class="grid__row">${row}</div>`).join("")}
+                    </div>
+                    <div class="grid__col">
+                        ${Object.values(content.body.col_2).map(row => `<div class="grid__row">${row}</div>`).join("")}
+                    </div>
+
+                </div>
+            </div>
+    `;
+
+        const threeColTemplate = `
+        <div div class="collapse-button ${index > 0 ? 'collapsed' : ''}" >
+                    <div class="collapse-button__line"></div>
+                    <div class="collapse-button__line collapse-button__line_vertical"></div>
+            </div >
 
             <div class="table__head">
                 <div class="table__row">
@@ -1252,103 +1377,101 @@
 
             <div class="collapsing-wrapper">
 
-                <div class="table__row_head grid">
+                <div class="table__row_head grid colums_${collumsLength}">
                     <div class="grid__col flex">${content.head.col_1}</div>
                     <div class="grid__col flex">${content.head.col_2}</div>
-                    <div class="grid__col grid__col_center">${content.head.col_3}</div>
-                    <div class="grid__col grid__col_center">${content.head.col_4}</div>
-                    <div class="grid__col grid__col_center">${content.head.col_5}</div>
-                    <div class="grid__col grid__col_center">${content.head.col_6}</div>
+                    <div class="grid__col flex">${content.head.col_3}</div>
                 </div>
 
-                <div class="table__body grid">
+                <div class="table__body grid colums_${collumsLength}">
+                    <div class="grid__col"></div>
                     <div class="grid__col">
-                        ${Object.values(content.body.col_1).map(row => `<div class="grid__row">${row}</div>`).join("")}
-                    </div>
-                    <div class="grid__col">
-                        <div class="grid__row">${content.body.col_2.row_1}</div>
-                    </div>
-                    <div class="grid__col">
-
-                        ${Object.values(content.body.col_3).map(row => {
-            return (
-                `
-                                <div class="grid__row">
-                                    <div class="select">
-                                        <div class="select__value">
-                                            <span class="value__text">${row}</span>
-                                            <span class="arrow-icon">
-                                                <svg width="9" height="5" viewBox="0 0 9 5" fill="none">
-                                                    <path d="M7.75 1L4.375 4L1 1" stroke="#212936"
-                                                        stroke-linecap="round" stroke-linejoin="round"></path>
-                                                </svg>
-
-                                            </span>
-                                        </div>
-                                        <div class="options">
-                                            ${options.map(el => `<div class="option">${el}</div>`).join('')}
-                                        </div>
-                                    </div>
-                                </div>
-                                `
-            )
-        }).join("")}
-                    </div>
-                    <div class="grid__col grid__col_center">
-                        <div class="grid__row">${content.body.col_4.row_1}</div>
+                        ${Object.values(content.body.col_1).map(row => `<div class="grid__row">
+                            <div class="checkbox ${row.cheked === 'true' ? 'checked' : ''}" id="${row.id}">
+                                <svg class="cheked-icon" width="8px" height="6px" viewBox="0 0 20 14" version="1.1">
+                                    <defs/>
+                                    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+                                        <g id="24-px-Icons" transform="translate(-410.000000, -125.000000)" stroke="#fff">
+                                            <g id="ic_tick" transform="translate(408.000000, 120.000000)">
+                                                <g id="tick">
+                                                    <g transform="translate(3.000000, 6.000000)" stroke-width="2">
+                                                        <path d="M0,6 L6,12" id="Line"/>
+                                                        <path d="M6,12 L18,0" id="Line"/>
+                                                    </g>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </svg>  
+                            </div>
+                            <span>${row.text}</span>
+                        </div>`).join("")}
                     </div>
                     <div class="grid__col">
-
-                        
-                        ${Object.values(content.body.col_5).map(row => {
-            return (
-                `
-                <div class="grid__row">
-                    <div class="select">
-                        <div class="select__value">
-                            <span class="value__text">${row}</span>
-                            <span class="arrow-icon">
-                                <svg width="9" height="5" viewBox="0 0 9 5" fill="none">
-                                    <path d="M7.75 1L4.375 4L1 1" stroke="#212936"
-                                        stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-
-                            </span>
-                        </div>
-                        <div class="options">
-                            ${options.map(el => `<div class="option">${el}</div>`).join('')}
-                        </div>
+                        ${Object.values(content.body.col_2).map(row => `<div class="grid__row">${row}</div>`).join("")}
                     </div>
-                </div>
-                `
-            )
-        }).join("")}
 
-                    </div>
-                    <div class="grid__col grid__col_center">
-                        <div class="grid__row">${content.body.col_6.row_1}</div>
-                    </div>
                 </div>
             </div>
-        `;
+    `;
+
+
+
+        if (collumsLength === 2) {
+            table.appendChild(tableWrapper);
+            tableWrapper.innerHTML = twoColTemplate;
+        }
+
+        if (collumsLength === 3) {
+            table.appendChild(tableWrapper);
+            tableWrapper.innerHTML = threeColTemplate;
+        }
+
         document.querySelector('.tables').appendChild(table)
     }
 
     gridTables.forEach((tableContent, index) => fillGridTable(tableContent, index))
 
+    const addComment = () => {
+        const table = document.createElement('div');
+        table.className = 'table';
+        const tableWrapper = document.createElement('div');
+        tableWrapper.className = 'table__wrapper';
+        tableWrapper.classList.add('collapsed');
+
+        tableWrapper.innerHTML = `
+            <div div class="collapse-button collapsed" >
+                <div class="collapse-button__line"></div>
+                <div class="collapse-button__line collapse-button__line_vertical"></div>
+            </div >
+            <div class="table__head">
+                <div class="table__row">
+                    <p class="group__title">${commentTable}</p>
+                </div>
+            </div>
+            <div class="collapsing-wrapper">
+                <div class="text-area" contenteditable="true"></div>
+            </div>
+        `;
+        table.appendChild(tableWrapper);
+        document.querySelector('.tables').appendChild(table)
+        }
+        commentTable && addComment()
 
     // theme
     const changeThemeButtons = document.querySelectorAll('.color-theme__item')
     const style = document.querySelector('style.theme');
 
-    style.innerHTML = `:root {--theme-color: var(--color-${themeColor})}`;
+    style.innerHTML = `:root { --theme-color: var(--color-${themeColor}) } `;
 
     const changeThemeHandler = (e) => {
         const button = e.currentTarget;
         themeColor = button.getAttribute('data-color')
         changeThemeButtons.forEach(button => button.classList.remove('active'))
         if (button.getAttribute('data-color') === themeColor) button.classList.add('active');
-        style.innerHTML = `:root {--theme-color: var(--color-${themeColor})}`;
+        style.innerHTML = `
+            :root { --theme-color: var(--color-${themeColor}) }
+        `;
     }
     changeThemeButtons.forEach(button => {
         if (button.getAttribute('data-color') === themeColor) button.classList.add('active');
@@ -1361,34 +1484,10 @@
     scrollContainer.style.minHeight = `calc(100vh - ${scrollContainer.offsetTop}px - 30px)`;
     // table 2 and 3
 
-    const tableTwoRowTemplate = (rowContent) => {
-        const row = document.createElement('div');
-        row.className = 'table__row';
-        row.innerHTML = `
-            <div class="table__col table__col_extra-mini container vertical-center">
-                <p class="col__text col__letter ${rowContent.letter.color}">
-                    ${rowContent.letter.text}
-                </p>
-            </div>
-            <div class="table__col table__col_medium vertical-center">
-                <p class="col__text text_left">${rowContent.collumn_2}</p>
-            </div>
-            <div class="table__col table__col_large vertical-center">
-                <p class="col__text">
-                    ${rowContent.collumn_3}
-                </p>
-            </div>
-            <div class="table__col table__col_large vertical-center">
-                <p class="col__text">${rowContent.collumn_4}
-                </p>
-            </div>
-        `;
-        return row
-    };
     const fillTableTwo = (tableContent) => {
         const parent = document.querySelector('#table-info');
         parent.innerHTML = `
-        <div class="table table_info">
+        <div div class="table table_info" >
             <div class="table__wrapper">
                 <div class="header__title flex">
                     ${tableContent.title}
@@ -1400,11 +1499,14 @@
                         </svg>
                     </div>
                 </div>
-                <div class="table__body hidden" id="info-table-body"></div>
+                <div class="table__body hidden" id="info-table-body">
+                    <div class="table__row text-info">
+                        ${tableContent.text}
+                    </div>
+                </div>
             </div>
-        </div>`;
+        </div >`;
         const tableBody = parent.querySelector('.table__body');
-        tableContent.rows.forEach(row => tableBody.appendChild(tableTwoRowTemplate(row)));
         document.querySelector('#info-table-handler').onclick = () => document.querySelector('#info-table-body').classList.toggle('hidden')
     };
     fillTableTwo(tableTwoContent);
@@ -1438,6 +1540,15 @@
     }
     collapseButtons.forEach(btn => btn.addEventListener('click', collapseButtonHandler));
 
+    const chekboxes = document.querySelectorAll('.checkbox');
+    chekboxes.forEach(chekbox => chekbox.addEventListener('click', (e) => chekbox.classList.toggle('checked')));
+
+    const subInfoBtns = document.querySelectorAll('.action.info');
+    subInfoBtns.forEach(btn => {
+        btn.onclick = (e) => {
+            e.currentTarget.closest('.table__wrapper').classList.toggle('sub-info-hidden')
+        }
+    })
 
 </script>
 

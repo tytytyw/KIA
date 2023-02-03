@@ -299,6 +299,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            background: #fff;
         }
 
         .table .table__wrapper .table__header {
@@ -481,6 +482,8 @@
             overflow-y: scroll;
             scrollbar-width: 5px;
             scrollbar-color: #C7C8CA;
+            overflow: hidden;
+            background: #f9f9f9;
         }
 
         body::-webkit-scrollbar-track {
@@ -576,6 +579,7 @@
 
         .table.table_info .table__wrapper {
             border-color: var(--theme-color);
+            background: #fff;
         }
 
         .table.table_info .table__wrapper .table__row .table__col.table__col_extra-mini {
@@ -994,7 +998,7 @@
             padding: 0;
         }
 
-        .table .table.table_info .text-info  {
+        .table .table.table_info .text-info {
             padding: 6px 11px;
         }
 
@@ -1113,7 +1117,7 @@
 
             // кнопки интерактивности в шапке таблице.
             actions: {
-                
+
                 plus: {
                     text: '',
                     id: 'any_id'
@@ -1149,7 +1153,7 @@
         {
             // вторая таблица (с чекбоксами)
 
-             // кнопки интерактивности в шапке таблице.
+            // кнопки интерактивности в шапке таблице.
             actions: {
                 // "" - нету кнопки
                 plus: "",
@@ -1190,9 +1194,9 @@
         {
             // третья таблица (с чекбоксами)
 
-             // кнопки интерактивности в шапке таблице.
+            // кнопки интерактивности в шапке таблице.
             actions: {
-                
+
                 plus: {
                     text: 'Development actions',
                     id: 'any_id'
@@ -1240,7 +1244,7 @@
 
             // кнопки интерактивности в шапке таблице.
             actions: {
-                
+
                 plus: {
                     text: 'Development actions',
                     id: 'any_id'
@@ -1455,8 +1459,8 @@
         `;
         table.appendChild(tableWrapper);
         document.querySelector('.tables').appendChild(table)
-        }
-        commentTable && addComment()
+    }
+    commentTable && addComment()
 
     // theme
     const changeThemeButtons = document.querySelectorAll('.color-theme__item')

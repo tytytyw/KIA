@@ -62,6 +62,8 @@
 
         /* header */
 
+        /* header */
+
         .header {
             border-bottom: 1px solid rgba(149, 155, 174, 0.25);
             display: flex;
@@ -87,7 +89,6 @@
         .nav__link.active {
             position: relative;
             color: var(--theme-color);
-            font-weight: 700;
         }
 
         .nav__link.active::after {
@@ -177,7 +178,6 @@
             -ms-transition: opactity .3s ease;
             -o-transition: opactity .3s ease;
             white-space: nowrap;
-            z-index: 2;
         }
 
         .lang:not(.active):hover {
@@ -244,6 +244,10 @@
 
         .lang#lang_handler.active .select {
             display: flex;
+        }
+
+        #lang_handler {
+            z-index: 2;
         }
 
         .lang#lang_handler.active .arrow-icon svg {
@@ -480,6 +484,13 @@
             scrollbar-color: #C7C8CA;
             background: #f9f9f9;
             overflow: hidden;
+            color: #212936;
+            font-family: "Arial", sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 11px;
+            line-height: 13px;
+            letter-spacing: 0.1px;
         }
 
         body::-webkit-scrollbar-track {
@@ -634,11 +645,12 @@
 
     <header class="header">
         <nav class="nav">
-            <a href="profile-link" id="profile-link" class="nav__link">Профайл сотрудника</a>
-            <a href="SET_EVAL-link" id="SET_EVAL-link" class="nav__link active">Business Goals SET_EVAL</a>
-            <a href="Сompany_goal-link" id="Сompany_goal-link" class="nav__link">Сompany goal</a>
-            <a href="EVAL_Comp-link" id="EVAL_Comp-link" class="nav__link">EVAL_Comp</a>
-            <a href="SET_Dev_goals-link" id="SET_Dev_goals-link" class="nav__link">SET Dev goals</a>
+            <a href="../profile/index.html" id="profile-link" class="nav__link">Профайл сотрудника</a>
+            <a href="../bussines_goals/index.html" id="SET_EVAL-link" class="nav__link active">Business Goals
+                SET_EVAL</a>
+            <a href="../text_area/" id="Сompany_goal-link" class="nav__link">Сompany goal</a>
+            <a href="../EVAL_Comp/index.html" id="EVAL_Comp-link" class="nav__link">EVAL_Comp</a>
+            <a href="../SET_Dev_goals/index.html" id="SET_Dev_goals-link" class="nav__link">SET Dev goals</a>
         </nav>
 
         <div class="header__actions">
